@@ -153,10 +153,15 @@ fun UniversalScanFilter.toScanFilters(): List<ScanFilter> {
             val serviceUUID = service?.validFullUUID()
             serviceUUID?.let {
                 val parcelUUId = ParcelUuid.fromString(it)
+                val serviceMask = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    ParcelUuid.fromString("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")
+                } else {
+                    ParcelUuid.fromString("FFFFFFFF-0000-0000-0000-000000000000")
+                }
                 scanFilters.add(
-                    ScanFilter.Builder().setServiceUuid(parcelUUId).build()
+                    ScanFilter.Builder().setServiceUuid(parcelUUId, serviceMask).build()
                 )
-                Log.e(TAG, "scanFilters: $parcelUUId")
+                Log.e(TAG, "scanFilters: $parcelUUId -> $serviceMask")
             }
         } catch (e: Exception) {
             Log.e(TAG, e.toString())

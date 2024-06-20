@@ -77,7 +77,9 @@ class _MyAppState extends State<MyApp> {
   Future<void> startScan() async {
     await UniversalBle.startScan(
       scanFilter: ScanFilter(
-        withServices: kIsWeb ? _services : [],
+        withServices: kIsWeb ? _services : [
+          '7073c4fe-0000-1000-8000-00805f9b34fb'
+        ],
         withManufacturerData: [
           // ManufacturerDataFilter(
           //   companyIdentifier: 0x012D,
